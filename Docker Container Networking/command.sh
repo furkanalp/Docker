@@ -68,3 +68,6 @@ wget localhost
 ping <WEB2_IP_ADDRESS>
 #Attempt to ping web1:
 ping <WEB1_IP_ADDRESS>
+exit
+docker stop $(docker ps -q)
+docker rm $(docker ps -a -q)
