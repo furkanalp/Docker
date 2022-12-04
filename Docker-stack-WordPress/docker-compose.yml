@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+    wpdatabase:
+        image: mysql:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: R1234r
+            MYSQL_DATABASE: claruswaywp
+            MYSQL_USER: clarusway
+            MYSQL_PASSWORD_FILE: /run/secrets/wp_password
+        secrets:
+            - wp_password
+        networks:
+            - clarusnet
+    wpserver:
+        image: wordpress:latest  
+        depends_on:
+            - wpdatabase
+        deploy:
+            replicas: 3
+            update_config:
+                parallelism: 2
+                delay: 5s
+                order: start-first
+        environment:
+            WORDPRESS_DB_USER: clarusway
+            WORDPRESS_DB_PASSWORD_FILE: /run/secrets/wp_password
+            WORDPRESS_DB_HOST: wpdatabase:3306
+            WORDPRESS_DB_NAME: claruswaywp
+        ports:
+            - "80:80"
+        secrets:
+            - wp_password
+        networks:
+            - clarusnet
+networks:
+    clarusnet:
+        driver: overlay
+
+secrets:
+    wp_password:
+        file: wp_password.txt
