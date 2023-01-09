@@ -1,0 +1,57 @@
+version: '3.7'
+​
+services:
+  my-app:
+    image: furkanalp/vprofileapp
+    volumes:
+      - myvolume-app:/usr/local/tomcat/webapps
+      # - type: bind
+      #   source: //wsl.localhost/Ubuntu-20.04/home/furkanalp/docker-files/myvolume-app
+      #   target: /usr/local/tomcat/webapps
+    networks:
+      - mynetwork
+    ports:
+      - 8080
+​
+  my-web:
+    image: furkanalp/vprofileweb
+    networks:
+      - mynetwork
+    ports:
+      - 80
+  my-db:
+    image: furkanalp/vprofiledb
+    volumes:
+      - myvolume-db:/var/lib/mysql
+      # - type: bind
+      #   source: //wsl.localhost/Ubuntu-20.04/home/furkanalp/docker-files/myvolume-db
+      #   target: /var/lib/mysql
+    networks:
+      - mynetwork
+    environment:
+      - MYSQL_ROOT_PASSWORD= "vprodbpass"
+      - MYSQL_DATABASE= "accounts"
+    ports:
+      - 3306
+​
+  memcached:
+    image: memcached
+    networks:
+      - mynetwork
+    ports:
+      - 11211
+  rabbitmq:
+    image: rabbitmq
+    networks:
+      - mynetwork
+    environment:
+      - RABBITMQ_DEFAULT_USER= guest 
+      - RABBITMQ_DEFAULT_PASS= guest
+    ports:
+      - 15672
+volumes:  
+  myvolume-app:
+  myvolume-db: 
+​
+networks:
+  mynetwork:
