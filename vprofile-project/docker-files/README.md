@@ -1,8 +1,8 @@
-# Project-205: Containerization of Java Application using Docker
+# Project-203: Containerization of Java Application using Docker
 
 [*Project Source*](https://www.udemy.com/course/devopsprojects/?src=sac&kw=devops+projects)
 
-![](images/Project-12.png)
+![](Project-12.png)
 
 ## Pre-requisities:
 
